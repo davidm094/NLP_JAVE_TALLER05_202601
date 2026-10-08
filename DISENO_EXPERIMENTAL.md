@@ -79,3 +79,16 @@ La mejor combinación se entrena con 3 semillas en la tarea binaria y luego en l
 ## 6. Qué no se hace (y por qué)
 
 No se corre la grilla completa de todas las combinaciones: con 13 factores y 2–5 niveles cada uno son decenas de miles de corridas, y cada una toma 2–5 minutos en CPU. El diseño por etapas cubre efectos principales de todos los factores e interacciones de los cuatro más relevantes.
+
+## 7. Decisiones tomadas durante la ejecución (7–8 oct)
+
+1. **Multiclase con paciencia 1** (binaria se mantiene en 3) para que cada corrida dure pocos minutos; el mejor modelo aparecía en la época 1–3. Riesgo: penaliza configuraciones que aprenden despacio (2 capas, lr bajo).
+2. **Base multiclase con pesos de clase.** Sin pesos, el F1 macro de validación varió 0,589 ± 0,028 entre 3 semillas (la clase Personality disorder se detecta o no según la semilla); con pesos, 0,617 ± 0,012. Los 9 factores multiclase se corrieron sobre esta base (prefijo `cw+` en los nombres).
+3. **Etapa 2 (factorial 2⁴) no se ejecutó** por tiempo. En su lugar, etapa 3: mejor combinación por tarea, 3 semillas cada una:
+   - Binaria: GRU + 2 capas + lr 3e-4 (los tres > 2σ por separado).
+   - Multiclase: GRU + 256 tokens + dropout 0,2 + pesos de clase (todos positivos, ninguno > 2σ; exploratoria).
+
+## 8. Inventario de corridas usadas en el análisis
+- Binaria: 3 semillas base + 9 factores + 3 semillas de la mejor combinación = 15 (+ `vocab=5000`, exploratoria).
+- Multiclase: 3 semillas base sin pesos + `celda=gru` sin pesos + 3 semillas con pesos + 9 factores con pesos + 3 semillas de la mejor combinación = 19.
+Todas en `results/resultados_<tarea>.csv`; el análisis está en `results/tabla_efectos.csv` y `results/resumen_base_vs_mejor.csv`.

@@ -2,3 +2,4 @@ data/*.csv
 __pycache__/
 modelos/
 *.keras
+results/log_*.txt

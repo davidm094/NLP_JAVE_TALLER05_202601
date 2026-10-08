@@ -3,3 +3,7 @@ pandas
 scikit-learn
 matplotlib
 reportlab
+scipy
+nbformat
+nbconvert
+ipykernel
