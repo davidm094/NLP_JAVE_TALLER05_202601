@@ -23,6 +23,7 @@ Clasificación de textos de salud mental (`statement_es_es`) con redes recurrent
 - La binaria es casi insensible a los hiperparámetros (todos los efectos en ±0,8 pp de F1).
 - En multiclase pesan la bidireccionalidad (−12 pp sin ella), la celda con compuertas (SimpleRNN −9 pp) y el vocabulario (1.000 palabras −8 pp).
 - GRU es igual o mejor que LSTM en ambas tareas y más rápida.
+- El modelo sobreajusta desde la época 1–2 (el embedding es el 90 % de los parámetros); un embedding de 16 dimensiones rinde igual con 71 % menos parámetros.
 
 ## Cómo correrlo
 ```bash
@@ -33,4 +34,5 @@ cd src
 python3 experimentos.py reducido binaria multiclase      # diseño reducido completo
 python3 correr.py multiclase cw+celda=gru                  # una corrida puntual (multiclase con pesos de clase)
 python3 figuras.py && python3 reporte.py                  # figuras y reporte PDF
+python3 sobreajuste.py binaria base_s42 emb_dim=16         # métricas de sobreajuste
 ```

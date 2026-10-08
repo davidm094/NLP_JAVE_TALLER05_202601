@@ -183,10 +183,10 @@ def fig_confusion(tarea, nombre, archivo):
     plt.close(fig)
 
 
-def fig_curvas():
-    casos = [("binaria", "base_s42", "Binaria — base (paciencia 3)"),
-             ("multiclase", "class_weight=True", "Multiclase — base con pesos (paciencia 1)"),
-             ("multiclase", "mejor_s42", "Multiclase — mejor combinación")]
+def fig_curvas(casos=None, archivo="curvas_aprendizaje.png"):
+    casos = casos or [("binaria", "base_s42", "Binaria — base (embedding 64)"),
+                      ("binaria", "emb_dim=16", "Binaria — embedding 16"),
+                      ("multiclase", "class_weight=True", "Multiclase — base con pesos")]
     casos = [c for c in casos if (RES / "histories" / f"{c[0]}__{c[1]}.json").exists()]
     fig, axs = plt.subplots(1, len(casos), figsize=(3.4 * len(casos), 2.7))
     for ax, (t, n, tit) in zip(np.atleast_1d(axs), casos):
@@ -203,7 +203,7 @@ def fig_curvas():
     np.atleast_1d(axs)[0].set_ylabel("Pérdida (entropía cruzada)", fontsize=8)
     np.atleast_1d(axs)[0].legend(fontsize=7.5)
     fig.tight_layout()
-    fig.savefig(FIG / "curvas_aprendizaje.png")
+    fig.savefig(FIG / archivo)
     plt.close(fig)
 
 

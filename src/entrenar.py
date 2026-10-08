@@ -21,7 +21,8 @@ BASE = dict(celda="lstm", bidireccional=True, vocab=10000, emb_dim=64,
             unidades=64, capas=1, dropout=0.0, dense=64, optimizador="adam",
             lr=1e-3, batch=64, max_len=128, epocas=20, paciencia=3,
             early_stopping=True, class_weight=False,
-            rec_dropout=0.0, l2=0.0, merge="concat", dense_act="relu", clipnorm=0.0)
+            rec_dropout=0.0, l2=0.0, merge="concat", dense_act="relu", clipnorm=0.0,
+            emb_dropout=0.0, l2_emb=0.0)
 
 _splits, _vec = {}, {}
 

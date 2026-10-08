@@ -15,10 +15,21 @@ cat["class_weight=True"] = ({"class_weight": True}, "class_weight")
 cw = nombre.startswith("cw+")          # base multiclase con pesos de clase (decisión 7-oct)
 clave = nombre[3:] if cw else nombre
 base_nombre = clave.split("_s")[0] if "_s" in clave and not clave.startswith("base") else clave
+import ast
+def _parse(n):  # "emb_dim=32+emb_dropout=0.3" -> dict
+    d = {}
+    for par in n.split("+"):
+        k, v = par.split("=")
+        try:
+            v = ast.literal_eval(v)
+        except (ValueError, SyntaxError):
+            pass
+        d[k] = v
+    return d
 if base_nombre.startswith("base"):
     cambios, grupo = {}, "base"
 else:
-    cambios, grupo = cat[base_nombre]
+    cambios, grupo = cat[base_nombre] if base_nombre in cat else (_parse(base_nombre), "sobreajuste")
 if cw:
     cambios = {**cambios, "class_weight": True}
 if tarea == "multiclase":

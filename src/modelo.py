@@ -32,7 +32,10 @@ CELDAS = {"lstm": tf.keras.layers.LSTM, "gru": tf.keras.layers.GRU,
 
 def construir(cfg, n_vocab, n_clases):
     reg = tf.keras.regularizers.l2(cfg["l2"]) if cfg["l2"] > 0 else None
-    capas = [tf.keras.layers.Embedding(n_vocab, cfg["emb_dim"], mask_zero=True)]
+    reg_emb = tf.keras.regularizers.l2(cfg.get("l2_emb", 0.0)) if cfg.get("l2_emb", 0.0) > 0 else None
+    capas = [tf.keras.layers.Embedding(n_vocab, cfg["emb_dim"], mask_zero=True, embeddings_regularizer=reg_emb)]
+    if cfg.get("emb_dropout", 0.0) > 0:  # apaga dimensiones completas del embedding (SpatialDropout1D)
+        capas.append(tf.keras.layers.SpatialDropout1D(cfg["emb_dropout"]))
     Celda = CELDAS[cfg["celda"]]
     for i in range(cfg["capas"]):
         ultima = i == cfg["capas"] - 1

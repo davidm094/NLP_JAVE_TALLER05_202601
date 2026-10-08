@@ -92,3 +92,8 @@ No se corre la grilla completa de todas las combinaciones: con 13 factores y 2�
 - Binaria: 3 semillas base + 9 factores + 3 semillas de la mejor combinación = 15 (+ `vocab=5000`, exploratoria).
 - Multiclase: 3 semillas base sin pesos + `celda=gru` sin pesos + 3 semillas con pesos + 9 factores con pesos + 3 semillas de la mejor combinación = 19.
 Todas en `results/resultados_<tarea>.csv`; el análisis está en `results/tabla_efectos.csv` y `results/resumen_base_vs_mejor.csv`.
+
+## 9. Mini-experimento de sobreajuste (8 oct)
+Motivo: el mejor modelo aparece en la época 1–2 y la pérdida de validación sube después. El embedding concentra 640.000 de 714.369 parámetros.
+Variantes en binaria (una semilla, paciencia 3): embedding 16; dropout espacial 0,3 sobre el embedding (`emb_dropout`); L2 1e-5 sobre el embedding (`l2_emb`); dropout 0,5; embedding 32 + dropout espacial 0,3. En multiclase: embedding 16 con pesos de clase.
+Resultado: ninguna mueve el F1 más de ~0,6 pp; el embedding de 16 rinde igual con 71 % menos parámetros y en multiclase retrasa la mejor época de 3–4 a 6. Métricas de sobreajuste: `src/sobreajuste.py`.
